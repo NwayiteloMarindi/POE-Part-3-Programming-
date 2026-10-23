@@ -32,19 +32,19 @@ namespace Marathon.Api.Controllers
             return Ok(participant);
         }
         [HttpPost]
-        public IActionResult CreateParticipant(CreateParticipant participant)
+        public IActionResult CreateParticipant(RegisterParticipant participant)
         {
             var participantEntity = new Participant
             {
-
+                ParticipantId = participant.ParticipantId,
                 ParticipantName = participant.ParticipantName,
                 ParticipantEmail = participant.ParticipantEmail,
                 ParticipantPhone = participant.ParticipantPhone,
-                ParticipantDOB = participant.ParticipantDOB,
-                ParticipantGender = participant.ParticipantGender,
                 ParticipantAddress = participant.ParticipantAddress,
                 UserId = participant.UserId,
-                Race_EventId = participant.Race_EventId
+                Race_EventId = participant.Race_EventId,
+                ParticipantDOB = participant.ParticipantDOB,
+                ParticipantGender = participant.ParticipantGender
             };
             _context.Participants.Add(participantEntity);
             _context.SaveChanges();

@@ -11,6 +11,10 @@ namespace Race_Day.Models.Entities
         public int Race_EventId { get; set; }
         [ForeignKey("RaceId")]
         public int RaceId { get; set; }
+        [ForeignKey("UserId")]
+        public int UserId { get; set; }
+        [ForeignKey("ParticipantId")]
+        public int ParticipantId { get; set; }
         public required string ParticipantName { get; set; }
         public required string ParticipantEmail { get; set; }
         public required string ParticipantPhone { get; set; }
