@@ -65,5 +65,17 @@ namespace Marathon.Api.Controllers
             _context.SaveChanges();
             return Ok("Race updated successfully");
         }
+        [HttpDelete("{id}")]
+        public IActionResult DeleteRace(int id)
+        {
+            var raceEntity = _context.Race.Find(id);
+            if (raceEntity == null)
+            {
+                return NotFound();
+            }
+            _context.Race.Remove(raceEntity);
+            _context.SaveChanges();
+            return Ok("Race deleted successfully");
+        }
     }
 }
