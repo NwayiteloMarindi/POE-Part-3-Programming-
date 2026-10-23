@@ -1,6 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Marathon.Api.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Race_Day.Data.DTO;
+using Race_Day.Models.DTO;
+using Race_Day.Models.Entities;
+using System.ComponentModel.DataAnnotations;
 
 namespace Marathon.Api.Controllers
 {
@@ -8,12 +13,23 @@ namespace Marathon.Api.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private     readonly App
+        private     readonly AppDatabaseContext _context;
         [HttpPost("register")]
         [Authorize]
-        public IActionResult Register()
+        public IActionResult Register(UserDTO createUser)
             {
-                return Ok("AuthController is working!");
+                var user = new User
+                {
+                    Id = createUser.Id,
+                    Name = createUser.Name,
+                    Email = createUser.Email,
+                    Password = createUser.Password,
+                    Role = createUser.Role,
+                    Phone= createUser.Phone,
+                };
+                _context.Users.Add(user);
+                _context.SaveChanges();
+                return Ok("User registered successfully");
         }
     }
 }
