@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Marathon.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class EventController : ControllerBase
     {
