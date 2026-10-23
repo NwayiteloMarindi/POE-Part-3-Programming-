@@ -1,4 +1,5 @@
 ﻿using Marathon.Api.Data;
+using Marathon.Api.Models.DTO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -30,6 +31,16 @@ namespace Marathon.Api.Controllers
                 _context.Users.Add(user);
                 _context.SaveChanges();
                 return Ok("User registered successfully");
+        }
+        [HttpPost("login")]
+        public IActionResult Login(LoginDTO loginDTO)
+        {
+            var user = _context.Users.FirstOrDefault(u => u.Email == loginDTO.Email && u.Password == loginDTO.Password);
+            if (user == null)
+            {
+                return Unauthorized("Invalid email or password");
+            }
+            return Ok("Login successful");
         }
     }
 }
