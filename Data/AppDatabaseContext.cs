@@ -12,7 +12,7 @@ namespace Marathon.Api.Data
 
 
         public DbSet<Event> Events { get; set; }
-        public DbSet<Login> Logins { get; set; }
+        
         public DbSet<Participant> Participants { get; set; }
         public DbSet<Race> Race { get; set; }
         public DbSet<Race_Event> Race_Events { get; set; }
