@@ -7,7 +7,7 @@ using Race_Day.Models.Entities;
 
 namespace Marathon.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class RegisterController : ControllerBase
     {

@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Marathon.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class TicketController : ControllerBase
     {
@@ -59,8 +59,8 @@ namespace Marathon.Api.Controllers
                 TicketPrice = ticket.TicketPrice,
                 TicketName = ticket.TicketName,
                 TicketDescription = ticket.TicketDescription,
-                PurchaseDate = ticket.PurchaseDate,
-                TicketStatus = ticket.TicketStatus
+                PurchaseDate = DateOnly.FromDateTime(DateTime.Now),
+                TicketStatus = "Active"
             };
             _context.Tickets.Add(ticketEntity);
             _context.SaveChanges();
@@ -68,6 +68,37 @@ namespace Marathon.Api.Controllers
         }
         [HttpPut("{id}")]
         [Authorize(Roles = "Admin,Organiser")]
+        public IActionResult UpdateTicket(int id, ScanTicket ticket)
+        {
+            var ticketEntity = _context.Tickets.Find(id);
+            if (ticketEntity == null)
+            {
+                return NotFound();
+            }
+            ticketEntity.Race_EventId = ticket.Race_EventId;
+            ticketEntity.UserId = ticket.UserId;
+            ticketEntity.TicketType = ticket.TicketType;
+            ticketEntity.TicketPrice = ticket.TicketPrice;
+            ticketEntity.TicketName = ticket.TicketName;
+            ticketEntity.TicketDescription = ticket.TicketDescription;
+            ticketEntity.PurchaseDate = ticket.PurchaseDate;
+            ticketEntity.TicketStatus = "Used";
+            _context.SaveChanges();
+            return Ok("Ticket updated successfully");
+        }
+        [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin,Organiser")]
+        public IActionResult DeleteTicket(int id)
+        {
+            var ticketEntity = _context.Tickets.Find(id);
+            if (ticketEntity == null)
+            {
+                return NotFound();
+            }
+            _context.Tickets.Remove(ticketEntity);
+            _context.SaveChanges();
+            return Ok("Ticket deleted successfully");
+        }
 
     }
 }
