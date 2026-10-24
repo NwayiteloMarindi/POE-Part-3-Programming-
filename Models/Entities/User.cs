@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using System.ComponentModel.DataAnnotations;
 
-namespace Race_Day.Models.Entities
+namespace Marathon.Api.Models.Entities
 {
     public class User
     {

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Race_Day.Models.DTO
+namespace Marathon.Api.Models.DTO
 {
     public class CreateUser
     {

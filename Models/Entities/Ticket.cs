@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace  Marathon.Api.Models.Entities
@@ -12,6 +13,7 @@ namespace  Marathon.Api.Models.Entities
         [ForeignKey("UserId")]
         public int UserId { get; set; }
         public required string TicketType { get; set; }
+        [Precision(18, 2)]
         public required decimal TicketPrice { get; set; }
         public string? TicketName { get; set; }
         public string? TicketDescription { get; set; }

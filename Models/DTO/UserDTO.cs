@@ -1,13 +1,12 @@
-﻿namespace Race_Day.Data.DTO
+﻿namespace Marathon.Api.Models.DTO
 {
     public class UserDTO
     {
-        public int Id { get; set; }
-        public required string Password { get; set; }
-
-        public required string Name { get; set; }
-        public required string Email { get; set; }
-        public required string Role { get; set; }
-        public required string Phone { get; set; }
+        public int UserAccountId { get; set; }
+        public required string UserAccountName { get; set; }
+        public required string UserAccountEmail { get; set; }
+        public required string UserAccountPassword { get; set; }
+        public required string UserAccountRole { get; set; }
+        public required string UserAccountPhone { get; set; }
     }
 }
