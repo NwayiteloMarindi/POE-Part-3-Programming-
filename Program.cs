@@ -1,4 +1,5 @@
 using Marathon.Api.Data;
+using Marathon.Api.Models.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Race_Day.Models.Entities;
@@ -15,7 +16,7 @@ builder.Services.AddDbContext<AppDatabaseContext>(
     options => options.UseSqlServer(
         builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<
-    IPasswordHasher<UserAccount>, PasswordHasher<UserAccount>>();
+    IPasswordHasher<User>, PasswordHasher<User>>();
 builder.Services.AddAuthorization();
 
 var app = builder.Build();

@@ -1,5 +1,6 @@
 ﻿using Marathon.Api.Data;
 using Marathon.Api.Models.DTO;
+using Marathon.Api.Models.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -19,40 +20,45 @@ namespace Marathon.Api.Controllers
     {
         private readonly AppDatabaseContext _context;
         private readonly IConfiguration _config;
-        private readonly IPasswordHasher<UserAccount> _hasher;
+        private readonly IPasswordHasher<User> _hasher;
 
        
-        public AuthController(AppDatabaseContext context, IConfiguration config, IPasswordHasher<UserAccount> hasher)
+        public AuthController(AppDatabaseContext context, IConfiguration config, IPasswordHasher<User> hasher)
         {
             _context= context;
             _config = config;
             _hasher = hasher;
         }
+
+
         [HttpPost("register")]
-        
-        public IActionResult Register(UserDTO createUser)
+        public async Task<IActionResult> Register([FromBody] CreateUser createUser)
+        {
+            if (!ModelState.IsValid)
+                return ValidationProblem(ModelState);
+
+            if (await _context.Users.AnyAsync(u => u.Email == createUser.Email))
+                return Conflict("Email is already registered.");
+
+            var user = new User
             {
-                var user = new UserAccount
-                {
-                   
-                    UserAccountName = createUser.UserAccountName,
-                    UserAccountEmail = createUser.UserAccountEmail,
-                    UserAccountPassword = null, // Password should be hashed and stored securely
-                    UserAccountRole = "User",
-                    UserAccountPhone = createUser.UserAccountPhone,
+                Name = createUser.Name,
+                Email = createUser.Email,
+                Phone = createUser.Phone,
+                Role = "User",
+                Password = "",                                    // placeholder (if entity requires it)
+            };
+            user.Password = _hasher.HashPassword(user, createUser.Password);   // ← fixed line
 
-                    
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync();
 
-                };
-               user.UserAccountPassword = _hasher.HashPassword(user, createUser.UserAccountPassword);
-            _context.Profiles.Add(user);
-                _context.SaveChanges();
-                return Ok("User registered successfully");
+            return Ok("User registered successfully");
         }
         [HttpPost("login")]
         public IActionResult Login(LoginDTO loginDTO)
         {
-            var user = _context.Profiles.FirstOrDefault(u => u.UserAccountEmail == loginDTO.Email && u.UserAccountPassword == loginDTO.Password);
+            var user = _context.Users.FirstOrDefault(u => u.Email == loginDTO.Email && u.Password == loginDTO.Password);
             if (user == null)
             {
                 return Unauthorized("Invalid email or password");
@@ -62,25 +68,25 @@ namespace Marathon.Api.Controllers
         [HttpGet]
         public IActionResult GetAccount()
         {
-            var accouEntity = _context.Profiles.ToList();
+            var accouEntity = _context.Users.ToList();
             return Ok(accouEntity);
         }
         [HttpGet("profiles")]
         [Authorize(Roles = "User")]
         public async Task<IActionResult> GetProfileAsync()
         {
-            var userId = _context.Profiles.Find(ClaimTypes.NameIdentifier);
+            var userId = _context.Users.Find(ClaimTypes.NameIdentifier);
             if (userId == null)
                 return Unauthorized();
            
-            var profile = await _context.Profiles
-            .Where(u => u.UserAccountId.Equals(userId))        
+            var profile = await _context.Users
+            .Where(u => u.Id.Equals(userId))        
             .Select(u => new                     
             {
-                u.UserAccountId,
-                u.UserAccountEmail,
-                u.UserAccountName,
-                u.UserAccountPhone,
+                u.Id,
+                u.Email,
+                u.Name,
+                u.Phone,
                
             })
             .FirstOrDefaultAsync();
@@ -94,13 +100,13 @@ namespace Marathon.Api.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAllProfilesAsync()
         {
-            var profiles = await _context.Profiles
+            var profiles = await _context.      Users   
                 .Select(u => new
                 {
-                    u.UserAccountId,
-                    u.UserAccountEmail,
-                    u.UserAccountName,
-                    u.UserAccountPhone,
+                    u.Id,
+                    u.Email,
+                    u.Name,
+                    u.Phone,
                 })
                 .ToListAsync();
             return Ok(profiles);
