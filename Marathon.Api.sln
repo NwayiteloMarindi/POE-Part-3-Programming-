@@ -5,6 +5,8 @@ VisualStudioVersion = 17.14.36915.13
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Marathon.Api", "Marathon.Api.csproj", "{5403B670-58F7-406C-AA9E-ECCCD9E0F8A5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Marathon.Mvc", "..\Marathon.Mvc\Marathon.Mvc.csproj", "{D3FC4842-BC1A-4551-A062-AD4F028F32D9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{5403B670-58F7-406C-AA9E-ECCCD9E0F8A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5403B670-58F7-406C-AA9E-ECCCD9E0F8A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5403B670-58F7-406C-AA9E-ECCCD9E0F8A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D3FC4842-BC1A-4551-A062-AD4F028F32D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3FC4842-BC1A-4551-A062-AD4F028F32D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3FC4842-BC1A-4551-A062-AD4F028F32D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3FC4842-BC1A-4551-A062-AD4F028F32D9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
